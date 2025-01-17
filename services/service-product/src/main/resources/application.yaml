@@ -1,0 +1,12 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: service-product
+  cloud:
+    nacos:
+      server-addr: 192.168.137.128:8848
+      config:
+        import-check:
+          enabled: false # 禁用配置检查
