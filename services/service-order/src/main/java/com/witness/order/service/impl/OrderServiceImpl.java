@@ -1,10 +1,12 @@
 package com.witness.order.service.impl;
 
 import com.witness.order.entity.Order;
+import com.witness.order.feign.ProductFeignClient;
 import com.witness.order.service.OrderService;
 import com.witness.product.entity.Product;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
@@ -25,6 +27,8 @@ public class OrderServiceImpl implements OrderService {
     private RestTemplate restTemplate;
     @Autowired
     private LoadBalancerClient loadBalancerClient;
+    @Autowired
+    private ProductFeignClient productFeignClient;
 
     /**
      * 创建订单
@@ -40,7 +44,9 @@ public class OrderServiceImpl implements OrderService {
         //远程调用获取商品信息
 //        Product product = getProductFromRemote(productId);
 //        Product product = getProductFromRemoteWithLoadBalancer(productId);
-        Product product = getProductFromRemoteWithLoadBalancerAnnotation(productId);
+//        Product product = getProductFromRemoteWithLoadBalancerAnnotation(productId);
+        //使用 openfeign 远程调用查询商品信息
+        Product product = productFeignClient.getProductById(productId);
         //总金额
         order.setTotalAmount(product.getPrice().multiply(BigDecimal.valueOf(product.getNum())));
         order.setUserId(userId);
@@ -91,6 +97,7 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      * 注解的方式负载均衡远程调用查询商品信息
+     *
      * @param productId
      * @return
      */

@@ -30,6 +30,7 @@
     </properties>
     <dependencyManagement>
         <dependencies>
+            <!--springcloud依赖-->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -37,6 +38,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!--springcloud-alibaba依赖-->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-dependencies</artifactId>
