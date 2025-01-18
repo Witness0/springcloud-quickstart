@@ -12,6 +12,10 @@ spring:
       server-addr: 192.168.137.128:8848 # Nacos地址
       config:
         namespace: ${spring.profiles.active:public} # 配置所使用的命名空间，默认值为public
+    sentinel:
+      transport:
+        dashboard: localhost:8080 # sentinel控制台地址
+      eager: true # 启动时加载所有规则，否则只加载关联的资源规则
 
 logging:
   level:

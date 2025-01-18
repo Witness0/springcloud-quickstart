@@ -10,3 +10,7 @@ spring:
       config:
         import-check:
           enabled: false # 禁用配置检查
+    sentinel:
+      transport:
+        dashboard: localhost:8080 # sentinel控制台地址
+      eager: true # 启动时加载所有规则，否则只加载关联的资源规则

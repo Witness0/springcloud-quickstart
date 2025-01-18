@@ -1,5 +1,7 @@
 package com.witness.order.service.impl;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.witness.order.entity.Order;
 import com.witness.order.feign.ProductFeignClient;
 import com.witness.order.service.OrderService;
@@ -27,6 +29,7 @@ public class OrderServiceImpl implements OrderService {
     private RestTemplate restTemplate;
     @Autowired
     private LoadBalancerClient loadBalancerClient;
+    @Qualifier("com.witness.order.feign.ProductFeignClient")
     @Autowired
     private ProductFeignClient productFeignClient;
 
@@ -37,6 +40,7 @@ public class OrderServiceImpl implements OrderService {
      * @param productId
      * @return
      */
+    @SentinelResource(value = "createOrder", blockHandler = "createOrderBlockHandler")
     @Override
     public Order createOrder(Long userId, Long productId) {
         Order order = new Order();
@@ -45,6 +49,7 @@ public class OrderServiceImpl implements OrderService {
 //        Product product = getProductFromRemote(productId);
 //        Product product = getProductFromRemoteWithLoadBalancer(productId);
 //        Product product = getProductFromRemoteWithLoadBalancerAnnotation(productId);
+
         //使用 openfeign 远程调用查询商品信息
         Product product = productFeignClient.getProductById(productId);
         //总金额
@@ -55,6 +60,26 @@ public class OrderServiceImpl implements OrderService {
         //远程调用查询商品列表
         order.setProductList(Arrays.asList(product));
 
+        return order;
+    }
+
+    /**
+     * 兜底回调
+     *
+     * @param userId
+     * @param productId
+     * @param e
+     * @return
+     */
+    public Order createOrderBlockHandler(Long userId, Long productId, BlockException e) {
+        Order order = new Order();
+        order.setId(0L);
+        order.setTotalAmount(BigDecimal.valueOf(0));
+        order.setUserId(userId);
+        order.setAddress("异常信息：" + e.getClass());
+        order.setNickName("未知用户");
+        //远程调用查询商品列表
+        order.setProductList(Arrays.asList(new Product()));
         return order;
     }
 
