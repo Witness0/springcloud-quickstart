@@ -1,0 +1,19 @@
+spring:
+  cloud:
+    openfeign:
+      client:
+        config: # 配置feign客户端
+          default: # 默认配置
+            connectTimeout: 1000 # 连接超时时间
+            readTimeout: 2000 # 读取超时时间
+            loggerLevel: full # 日志级别
+          service-product: # 精确设置，没有精确设置则使用默认配置
+            connectTimeout: 3000
+            readTimeout: 5000
+            loggerLevel: full
+            request-interceptors:
+#              - com.witness.order.feign.XTokenRequestInterceptor
+#            retryer: com.witness.order.feign.MyRetryer # 重试策略
+feign:
+  sentinel:
+    enabled: true # 开启sentinel服务熔断功能
