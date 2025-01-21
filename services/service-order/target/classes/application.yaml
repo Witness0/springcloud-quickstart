@@ -16,6 +16,7 @@ spring:
       transport:
         dashboard: localhost:8080 # sentinel控制台地址
       eager: true # 启动时加载所有规则，否则只加载关联的资源规则
+      web-context-unify: false # 是否使用统一上下文
 
 logging:
   level:
