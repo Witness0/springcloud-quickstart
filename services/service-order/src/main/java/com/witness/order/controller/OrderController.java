@@ -52,5 +52,27 @@ public class OrderController {
         return order;
     }
 
+    /**
+     * 秒杀订单
+     * @param userId
+     * @param productId
+     * @return
+     */
+    @GetMapping("/seckill")
+    public Order Seckill(@PathParam("userId") Long userId,
+                             @PathParam("productId") Long productId) {
+        Order order = orderService.createOrder(userId, productId);
+        order.setId(Long.MAX_VALUE);
+        return order;
+    }
+
+    @GetMapping("writeDb")
+    public String writeDb() {
+        return "writeDb...";
+    }
+    @GetMapping("/readDb")
+    public String readDb() {
+        return "readDb...";
+    }
 
 }

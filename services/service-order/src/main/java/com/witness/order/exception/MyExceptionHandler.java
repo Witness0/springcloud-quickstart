@@ -18,7 +18,10 @@ public class MyExceptionHandler implements BlockExceptionHandler {
 
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String s, BlockException e) throws Exception {
+
         httpServletResponse.setContentType("application/json;charset=utf-8");
+
+        httpServletResponse.setStatus(429); // 429 表示请求被限流了
         PrintWriter writer = httpServletResponse.getWriter();
 
         Result error = Result.error(500, s + "被sentinel限制了，原因：" + e.getClass());
