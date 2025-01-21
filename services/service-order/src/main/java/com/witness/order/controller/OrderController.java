@@ -1,5 +1,7 @@
 package com.witness.order.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.witness.order.entity.Order;
 import com.witness.order.properties.OrderProperties;
 import com.witness.order.service.OrderService;
@@ -8,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.math.BigDecimal;
 
 //@RefreshScope //激活配置属性的自动刷新
 @RestController
@@ -54,15 +59,26 @@ public class OrderController {
 
     /**
      * 秒杀订单
+     *
      * @param userId
      * @param productId
      * @return
      */
+    @SentinelResource(value = "seckill-order", blockHandler = "seckillBlockHandler")
     @GetMapping("/seckill")
-    public Order Seckill(@PathParam("userId") Long userId,
-                             @PathParam("productId") Long productId) {
+    public Order seckill(@RequestParam(value = "userId", defaultValue = "888") Long userId,
+                         @RequestParam(value = "productId", defaultValue = "1000") Long productId) {
         Order order = orderService.createOrder(userId, productId);
         order.setId(Long.MAX_VALUE);
+        return order;
+    }
+
+    public Order seckillFallback(Long userId, Long productId, BlockException e) {
+        System.out.println("seckillFallback...");
+        Order order = new Order();
+        order.setId(productId);
+        order.setUserId(userId);
+        order.setAddress("异常信息：" + e.getClass());
         return order;
     }
 
@@ -70,6 +86,7 @@ public class OrderController {
     public String writeDb() {
         return "writeDb...";
     }
+
     @GetMapping("/readDb")
     public String readDb() {
         return "readDb...";
