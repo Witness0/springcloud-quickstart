@@ -1,0 +1,12 @@
+spring:
+  profiles: # 引入配置
+    include: route # 引入route配置
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      server-addr: 192.168.137.128:8848 # Nacos地址
+
+# 配置网关端口
+server:
+  port: 80

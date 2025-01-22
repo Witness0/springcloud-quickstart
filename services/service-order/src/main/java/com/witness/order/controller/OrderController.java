@@ -6,16 +6,20 @@ import com.witness.order.entity.Order;
 import com.witness.order.properties.OrderProperties;
 import com.witness.order.service.OrderService;
 import jakarta.websocket.server.PathParam;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 
 //@RefreshScope //激活配置属性的自动刷新
+//@RequestMapping("/api/order")
+@Slf4j
 @RestController
 public class OrderController {
     @Autowired
@@ -84,11 +88,13 @@ public class OrderController {
 
     @GetMapping("writeDb")
     public String writeDb() {
+        log.info("writeDb...");
         return "writeDb...";
     }
 
     @GetMapping("/readDb")
     public String readDb() {
+        log.info("readDb...");
         return "readDb...";
     }
 
