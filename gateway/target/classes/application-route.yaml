@@ -1,0 +1,40 @@
+spring:
+  cloud:
+    gateway:
+      routes: # 路由配置
+        - id: order-route
+          uri: lb://service-order
+          predicates: # 断言（短写法）
+            - Path=/api/order/**
+          filters:
+            - RewritePath=/api/order/?(?<segment>.*), /$\{segment}  # 路径重写
+            - AddResponseHeader=X-Response-Abc,123 # 添加响应头
+
+        - id: product-route
+          uri: lb://service-product
+          predicates: # 断言（长写法）
+            - name: Path
+              args:
+                pattern: /api/product/**
+                matchTrailingSlash: true # 匹配尾部斜杠
+          filters:
+            - RewritePath=/api/product/?(?<segment>.*), /$\{segment}  # 路径重写
+
+        - id: bing-route
+          uri: https://cn.bing.com
+          predicates:
+            - name: Path
+              args:
+                pattern: /search
+            - name: Query
+              args:
+                param: q
+                regexp: haha
+            #            - Vip=user,witness # 使用自定义断言工厂（短写法）
+            - name: Vip # 使用自定义断言工厂（长写法）
+              args:
+                param: user
+                value: witness
+      default-filters: # 默认过滤器
+        -AddResponseHeader=X-Response-Default,default # 添加响应头
+
