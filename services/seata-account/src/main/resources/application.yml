@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: seata-account
+  datasource:
+    url: jdbc:mysql://localhost:3306/account_db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    nacos:
+      server-addr: 192.168.137.128:8848
+      config:
+        import-check:
+          enabled: false
+server:
+  port: 10000
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+seata:
+  tx-service-group: # 全局事务组名称
+

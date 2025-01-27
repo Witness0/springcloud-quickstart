@@ -13,9 +13,13 @@
     <modules>
         <module>service-order</module>
         <module>service-product</module>
+        <module>seata-account</module>
+        <module>seata-business</module>
+        <module>seata-order</module>
+        <module>seata-storage</module>
     </modules>
 
-    <groupId>ocom.witness</groupId>
+    <groupId>com.witness</groupId>
     <artifactId>services</artifactId>
 
     <properties>
@@ -76,6 +80,11 @@
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+        </dependency>
+        <!--seata依赖-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
         </dependency>
     </dependencies>
 

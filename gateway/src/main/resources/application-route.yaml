@@ -42,5 +42,5 @@ spring:
                 param: user
                 value: witness
       default-filters: # 默认过滤器
-        -AddResponseHeader=X-Response-Default,default # 添加响应头
+        - AddResponseHeader=X-Response-Default,default # 添加响应头
 

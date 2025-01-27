@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: seata-business
+  cloud:
+    nacos:
+      server-addr: 192.168.137.128:8848
+      config:
+        import-check:
+          enabled: false
+server:
+  port: 11000
+
+logging:
+  level:
+    com.witness.bussiness.feign: debug # 配置openfeign日志级别
+
